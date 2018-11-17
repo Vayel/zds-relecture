@@ -1,3 +1,5 @@
 browser.pageAction.onClicked.addListener(() => {
-    alert("TODO");
+    browser.tabs.executeScript({
+        file: "edit_ui.js"
+    });
 });
