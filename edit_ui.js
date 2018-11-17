@@ -17,6 +17,8 @@ var content = document.getElementById("content");
 var wrapper = document.querySelector(".content-wrapper");
 var FEEDBACK_WRAPPER_ID = "feedback-wrapper";
 var INTRO_SECTION_ID = "introduction";
+var SEND_BTN_ID = "feedback-send-btn";
+var FINAL_MSG_ID = "feedback-final-msg";
 
 
 /*
@@ -134,7 +136,7 @@ function displayFeedbackAreas() {
         if (relYCur > 0 && relYCur < window.innerHeight) {
             // The section title appears on the screen
             section.feedbackWrapper.style.visibility = "visible";
-            section.feedbackWrapper.style.top = relYCur + "px";
+            section.feedbackWrapper.style.top = Math.max(relYCur, 20) + "px";
         } else if (relYCur < 0 && relYNext - (height + MARGIN) > 0) {
             // We are between the section title and the next section title
             section.feedbackWrapper.style.visibility = "visible";
@@ -194,3 +196,57 @@ document.addEventListener("keyup", function(event) {
     area.focus();
 });
 
+
+/*
+ * Create final message
+ */
+(function(wrapper) {
+    var finalMsg = document.createElement("textarea");
+    finalMsg.id = FINAL_MSG_ID;
+    finalMsg.style.display = "none";
+    finalMsg.style.position = "fixed";
+    finalMsg.style.top = "0px";
+    finalMsg.style.left = "0px";
+    finalMsg.style.width = "0px";
+    finalMsg.style.height = "0px";
+
+    var btn = document.createElement("button");
+    btn.id = SEND_BTN_ID;
+    btn.innerHTML = "Copier";
+    btn.style.position = "fixed";
+    btn.style.fontFamily = "Merriweather,Liberation Serif,Times New Roman,Times,Georgia,FreeSerif,serif";
+    btn.style.background = "#eee";
+    btn.style.color = "#555";
+    btn.style.cursor = "pointer";
+    btn.style.border = "none";
+    btn.style.fontSize = "none";
+    btn.style.top = "5px";
+    btn.style.right = "5px";
+    btn.style.padding = "0px 10px";
+    btn.style.fontSize = "12px";
+
+    wrapper.appendChild(btn);
+    wrapper.appendChild(finalMsg);
+
+    btn.addEventListener("mouseover", function() {
+        btn.innerHTML = "Copier les retours dans le presse-papiers.";
+    });
+
+    btn.addEventListener("mouseout", function() {
+        btn.innerHTML = "Copier";
+    });
+})(feedbackWrapper);
+
+document.getElementById(SEND_BTN_ID).addEventListener("click", function() {
+    var finalMsg = document.getElementById(FINAL_MSG_ID);
+    var msg = "TODO";
+    finalMsg.value = msg;
+    finalMsg.style.display = "block";
+    finalMsg.select();
+    document.execCommand("copy");
+    finalMsg.style.display = "none";
+    
+    var btn = document.getElementById(SEND_BTN_ID);
+    btn.innerHTML = "Copié !"
+    setTimeout(function() { btn.innerHTML = "Copier"; }, 2000);
+});
