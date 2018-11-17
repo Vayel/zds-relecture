@@ -70,6 +70,25 @@ function createFeedbackWidgets(sections, parent) {
     }
 }
 
+function createFeedbackMessage(parent) {
+    var id = "feedback-message";
+    var el = parent.querySelector("#" + id);
+    if (el) {
+        return el;
+    }
+
+    el = document.createElement("textarea");
+    el.id = FINAL_MSG_ID;
+    el.style.display = "none";
+    el.style.position = "fixed";
+    el.style.top = "0px";
+    el.style.left = "0px";
+    el.style.width = "0px";
+    el.style.height = "0px";
+
+    parent.appendChild(el);
+    return el;
+}
 
 var content = document.getElementById("content");
 var wrapper = document.querySelector(".content-wrapper");
@@ -85,8 +104,28 @@ var feedbackWrapper = createFeedbackWrapper(content);
 var sections = listSections(INTRO_SECTION_ID);
 createFeedbackWidgets(sections, feedbackWrapper);
 
+var copyFeedback = (function(parent) {
+    var feedbackMsg = createFeedbackMessage(parent);
 
+    return function() {
+        var msg = mdTitle(mdLink(readTitle(), window.location), 1);
+        var feedback;
 
+        for (var section of sections) {
+            feedback = section.feedbackWidget.toMarkdown();
+            if (!feedback) continue;
+            msg += "\n\n" + feedback;
+        }
+
+        feedbackMsg.value = msg;
+        feedbackMsg.style.display = "block";
+        feedbackMsg.select();
+        document.execCommand("copy");
+        feedbackMsg.style.display = "none";
+    }
+})(feedbackWrapper);
+
+var toolbar = Toolbar(feedbackWrapper, "feedback-toolbar", copyFeedback);
 
 
 
@@ -125,6 +164,7 @@ function findActiveArea() {
 }
 
 document.addEventListener("keyup", function(event) {
+    return; // TODO
     var text = getSelectedText();    
     if (!text || event.keyCode != 13) // 13 == Enter
         return;
@@ -141,72 +181,3 @@ document.addEventListener("keyup", function(event) {
 });
 
 
-/*
- * Create final message
- */
-function editCopyBtn(btn, icon) {
-    btn.innerHTML = "Copier";
-}
-
-(function(wrapper) {
-    var finalMsg = document.createElement("textarea");
-    finalMsg.id = FINAL_MSG_ID;
-    finalMsg.style.display = "none";
-    finalMsg.style.position = "fixed";
-    finalMsg.style.top = "0px";
-    finalMsg.style.left = "0px";
-    finalMsg.style.width = "0px";
-    finalMsg.style.height = "0px";
-
-    var btn = document.createElement("button");
-    btn.id = SEND_BTN_ID;
-    btn.style.position = "fixed";
-    btn.style.fontFamily = "Merriweather,Liberation Serif,Times New Roman,Times,Georgia,FreeSerif,serif";
-    btn.style.backgroundColor = "#eee";
-    btn.style.color = "#555";
-    btn.style.cursor = "pointer";
-    btn.style.border = "none";
-    btn.style.fontSize = "none";
-    btn.style.top = "5px";
-    btn.style.right = "5px";
-    btn.style.padding = "0px 10px";
-    btn.style.fontSize = "12px";
-    editCopyBtn(btn, "copy");
-
-    wrapper.appendChild(btn);
-    wrapper.appendChild(finalMsg);
-
-    btn.addEventListener("mouseover", function() {
-        btn.innerHTML = "Copier dans le presse-papier";
-        //btn.style.backgroundImage = "none";
-    });
-
-    btn.addEventListener("mouseout", function() {
-        editCopyBtn(btn, "copy");
-    });
-})(feedbackWrapper);
-
-document.getElementById(SEND_BTN_ID).addEventListener("click", function() {
-    var finalMsg = document.getElementById(FINAL_MSG_ID);
-    var msg = mdTitle(mdLink(readTitle(), window.location), 1);
-    var feedback;
-
-    for (var section of sections) {
-        feedback = section.feedbackWrapper.querySelector("textarea").value;
-        if (!feedback) continue;
-        msg += "\n\n";
-        msg += mdTitle(mdLink(section.title, section.url), 2);
-        msg += "\n\n";
-        msg += feedback;
-    }
-
-    finalMsg.value = msg;
-    finalMsg.style.display = "block";
-    finalMsg.select();
-    document.execCommand("copy");
-    finalMsg.style.display = "none";
-    
-    var btn = document.getElementById(SEND_BTN_ID);
-    editCopyBtn(btn, "check-circle");
-    setTimeout(function() { editCopyBtn(btn, "copy"); }, 2000);
-});

@@ -12,14 +12,6 @@ var FeedbackWidget = function(section, wrapper) {
         widget.appendChild(textarea);
     }
 
-    function mdLink(txt, url) {
-        return "[" + txt + "](" + url + ")";
-    }
-
-    function mdTitle(txt, order) {
-        return "#".repeat(order) + " " + txt;
-    }
-
     return {
         toMarkdown: function() {
             var feedback = textarea.value;
