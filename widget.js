@@ -12,10 +12,6 @@ var Widget = function(section, id, wrapper) {
     widget.style.top = "30px";
     widget.style.width = "45%";
 
-    function isSectionTitle(el) {
-        return el.tagName == "H2" && el.className.split(" ").indexOf("subtitle") == -1;
-    }
-
     function findNextSection(section) {
         var cur = section;
         while ((cur = cur.nextSibling) && !isSectionTitle(cur)) {}

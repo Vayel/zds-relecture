@@ -25,5 +25,14 @@ var FeedbackWidget = function(section, wrapper) {
         },
         clear: function() { textarea.value = ""; },
         fill: function(text) { textarea.value = text; },
+        quote: function(selectedText) {
+            var lines = selectedText.split("\n");
+            var quote = "> " + lines.join("\n> ");
+            if (textarea.value) {
+                textarea.value += "\n\n";
+            }
+            textarea.value += quote + "\n\n";
+            textarea.focus();
+        },
     };
 };

@@ -90,6 +90,19 @@ function createFeedbackMessage(parent) {
     return el;
 }
 
+function findActiveFeedbackWidget(sections) {
+    var cur = window.getSelection().anchorNode.parentNode;
+
+    while ((cur = cur.previousSibling) && !isSectionTitle(cur)) {}
+
+    var sectionId = cur ? cur.id : INTRO_SECTION_ID;
+    for (var section of sections) {
+        if (section.id == sectionId) {
+            return section.feedbackWidget;
+        }
+    }
+}
+
 var content = document.getElementById("content");
 var wrapper = document.querySelector(".content-wrapper");
 var FEEDBACK_WRAPPER_ID = "feedback-wrapper";
@@ -127,57 +140,13 @@ var copyFeedback = (function(parent) {
 
 var toolbar = Toolbar(feedbackWrapper, "feedback-toolbar", copyFeedback);
 
-
-
-
-
-
-
-/*
- * Add selected text to feedback area
- */
-function getSelectedText() {
-    var text = "";
-    if (typeof window.getSelection != "undefined") {
-        text = window.getSelection().toString();
-    } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
-        text = document.selection.createRange().text;
-    }
-    return text;
-}
-
-function isSectionTitle(el) {
-    return el.tagName == "H2" && el.className.split(" ").indexOf(".subtitle") == -1;
-}
-
-function findActiveArea() {
-    var cur = window.getSelection().anchorNode.parentNode;
-
-    while ((cur = cur.previousSibling) && !isSectionTitle(cur)) {}
-
-    var sectionId = cur ? cur.id : INTRO_SECTION_ID;
-    for (var section of sections) {
-        if (section.id == sectionId) {
-            return section.feedbackWrapper.querySelector("textarea");
-        }
-    }
-}
-
 document.addEventListener("keyup", function(event) {
-    return; // TODO
     var text = getSelectedText();    
-    if (!text || event.keyCode != 13) // 13 == Enter
-        return;
-    var lines = text.split("\n");
-    var quote = "> " + lines.join("\n> ");
-    var area = findActiveArea();
-    if (area == null)
-        throw "Cannot find active area.";
-    if (area.value) {
-        area.value += "\n\n";
+    if (text && event.keyCode == 13) { // 13 == Enter
+        var widget = findActiveFeedbackWidget(sections);
+        if (!widget) {
+            return alert("Error: cannot find active widget.");
+        }
+        widget.quote(text);
     }
-    area.value += quote + "\n\n";
-    area.focus();
 });
-
-
