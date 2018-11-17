@@ -34,7 +34,14 @@ function openZenMode(content) {
     btn.click();
 }
 
+function formatContent(wrapper) {
+    // We need to use `el.setAttribute()` instead of `el.style.property`
+    // because there is an "!important" CSS rule that we need to override.
+    wrapper.setAttribute("style", "width: 45%; margin: 0px 30px !important;");
+}
+
 var content = document.getElementById("content");
 var wrapper = document.querySelector(".content-wrapper");
 
 openZenMode(content);
+formatContent(wrapper);
