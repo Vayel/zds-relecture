@@ -6,6 +6,7 @@
   "homepage_url": "https://github.com/Vayel/zds-relecture-web-extension",
   "icons": {
     "32": "icons/zds-32.png",
+    "48": "icons/zds-48.png",
     "64": "icons/zds-64.png"
   },
   "permissions": [
