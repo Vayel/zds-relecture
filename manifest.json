@@ -26,7 +26,7 @@
     "scripts": ["background.js"]
   },
   "web_accessible_resources": [
-    "icons/copy.svg",
-    "icons/check-circle.svg"
+    "icons/copy.png",
+    "icons/check.png"
   ]
 }
