@@ -97,7 +97,7 @@ var sections = (function() {
     var titles = document.querySelectorAll("h2:not(.subtitle)");
     var sections = [{
         id: INTRO_SECTION_ID,
-        title: readTitle(),
+        title: "Introduction",
         titleElement: document.querySelector("h1"),
         url: window.location,
         top: getAbsoluteTop(document.querySelector("h1")),
@@ -136,7 +136,7 @@ function displayFeedbackAreas() {
         if (relYCur > 0 && relYCur < window.innerHeight) {
             // The section title appears on the screen
             section.feedbackWrapper.style.visibility = "visible";
-            section.feedbackWrapper.style.top = Math.max(relYCur, 20) + "px";
+            section.feedbackWrapper.style.top = Math.max(relYCur, 25) + "px";
         } else if (relYCur < 0 && relYNext - (height + MARGIN) > 0) {
             // We are between the section title and the next section title
             section.feedbackWrapper.style.visibility = "visible";
@@ -229,7 +229,7 @@ document.addEventListener("keyup", function(event) {
     wrapper.appendChild(finalMsg);
 
     btn.addEventListener("mouseover", function() {
-        btn.innerHTML = "Copier les retours dans le presse-papiers.";
+        btn.innerHTML = "Copier les retours dans le presse-papier";
     });
 
     btn.addEventListener("mouseout", function() {
@@ -237,9 +237,28 @@ document.addEventListener("keyup", function(event) {
     });
 })(feedbackWrapper);
 
+function mdLink(txt, url) {
+    return "[" + txt + "](" + url + ")"
+}
+
+function mdTitle(txt, order) {
+    return "#".repeat(order) + " " + txt;
+}
+
 document.getElementById(SEND_BTN_ID).addEventListener("click", function() {
     var finalMsg = document.getElementById(FINAL_MSG_ID);
-    var msg = "TODO";
+    var msg = mdTitle(mdLink(readTitle(), window.location), 1);
+    var feedback;
+
+    for (var section of sections) {
+        feedback = section.feedbackWrapper.querySelector("textarea").value;
+        if (!feedback) continue;
+        msg += "\n\n";
+        msg += mdTitle(mdLink(section.title, section.url), 2);
+        msg += "\n\n";
+        msg += feedback;
+    }
+
     finalMsg.value = msg;
     finalMsg.style.display = "block";
     finalMsg.select();
