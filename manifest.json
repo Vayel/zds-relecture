@@ -1,0 +1,28 @@
+{
+
+  "manifest_version": 2,
+  "name": "ZdSRelecture",
+  "version": "1.0",
+  "homepage_url": "https://github.com/Vayel/zds-relecture-web-extension",
+  "icons": {
+    "32": "icons/zds-32.png",
+    "64": "icons/zds-64.png"
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "page_action": {
+    "browser_style": true,
+    "default_icon": "icons/zds-32.png",
+    "default_title": "ZdSRelecture",
+    "show_matches": [
+      "*://zestedesavoir.com/contenus/*",
+      "*://zestedesavoir.com/tutoriels/*",
+      "*://zestedesavoir.com/articles/*",
+      "*://zestedesavoir.com/billets/*"
+    ]
+  },
+  "background": {
+    "scripts": ["background.js"]
+  }
+}
