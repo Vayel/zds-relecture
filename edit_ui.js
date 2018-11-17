@@ -27,7 +27,14 @@ function readSections() {
     return sections;
 }
 
+function openZenMode(content) {
+    var classes = content.className.split(' ');
+    if(classes.indexOf("zen-mode") != -1) return;
+    var btn = document.querySelector(".open-zen-mode");
+    btn.click();
+}
+
+var content = document.getElementById("content");
 var wrapper = document.querySelector(".content-wrapper");
-wrapper.style.margin = "0px";
-var sections = readSections();
-alert(JSON.stringify(sections));
+
+openZenMode(content);
