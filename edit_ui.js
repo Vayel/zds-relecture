@@ -16,6 +16,7 @@ function getAbsoluteTop(element) {
 var content = document.getElementById("content");
 var wrapper = document.querySelector(".content-wrapper");
 var FEEDBACK_WRAPPER_ID = "feedback-wrapper";
+var INTRO_SECTION_ID = "introduction";
 
 
 /*
@@ -93,7 +94,7 @@ var feedbackWrapper = document.getElementById(FEEDBACK_WRAPPER_ID);
 var sections = (function() {
     var titles = document.querySelectorAll("h2:not(.subtitle)");
     var sections = [{
-        id: "introduction",
+        id: INTRO_SECTION_ID,
         title: readTitle(),
         titleElement: document.querySelector("h1"),
         url: window.location,
@@ -145,3 +146,51 @@ function displayFeedbackAreas() {
 
 document.addEventListener("scroll", displayFeedbackAreas);
 displayFeedbackAreas();
+
+
+/*
+ * Add selected text to feedback area
+ */
+function getSelectedText() {
+    var text = "";
+    if (typeof window.getSelection != "undefined") {
+        text = window.getSelection().toString();
+    } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
+        text = document.selection.createRange().text;
+    }
+    return text;
+}
+
+function isSectionTitle(el) {
+    return el.tagName == "H2" && el.className.split(" ").indexOf(".subtitle") == -1;
+}
+
+function findActiveArea() {
+    var cur = window.getSelection().anchorNode.parentNode;
+
+    while ((cur = cur.previousSibling) && !isSectionTitle(cur)) {}
+
+    var sectionId = cur ? cur.id : INTRO_SECTION_ID;
+    for (var section of sections) {
+        if (section.id == sectionId) {
+            return section.feedbackWrapper.querySelector("textarea");
+        }
+    }
+}
+
+document.addEventListener("keyup", function(event) {
+    var text = getSelectedText();    
+    if (!text || event.keyCode != 13) // 13 == Enter
+        return;
+    var lines = text.split("\n");
+    var quote = "> " + lines.join("\n> ");
+    var area = findActiveArea();
+    if (area == null)
+        throw "Cannot find active area.";
+    if (area.value) {
+        area.value += "\n\n";
+    }
+    area.value += quote + "\n\n";
+    area.focus();
+});
+
