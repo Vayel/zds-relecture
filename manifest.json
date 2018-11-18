@@ -28,6 +28,7 @@
   },
   "web_accessible_resources": [
     "icons/copy.png",
+    "icons/clear.png",
     "icons/check.png"
   ]
 }

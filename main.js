@@ -78,7 +78,6 @@ function createFeedbackMessage(parent) {
     }
 
     el = document.createElement("textarea");
-    el.id = FINAL_MSG_ID;
     el.style.display = "none";
     el.style.position = "fixed";
     el.style.top = "0px";
@@ -90,12 +89,12 @@ function createFeedbackMessage(parent) {
     return el;
 }
 
-function findActiveFeedbackWidget(sections) {
+function findActiveFeedbackWidget(sections, introId) {
     var cur = window.getSelection().anchorNode.parentNode;
 
     while ((cur = cur.previousSibling) && !isSectionTitle(cur)) {}
 
-    var sectionId = cur ? cur.id : INTRO_SECTION_ID;
+    var sectionId = cur ? cur.id : introId;
     for (var section of sections) {
         if (section.id == sectionId) {
             return section.feedbackWidget;
@@ -103,17 +102,20 @@ function findActiveFeedbackWidget(sections) {
     }
 }
 
+function clearFeedback() {
+    for (var section of sections) {
+        section.feedbackWidget.clear();
+    }
+}
+
 var content = document.getElementById("content");
 var wrapper = document.querySelector(".content-wrapper");
-var FEEDBACK_WRAPPER_ID = "feedback-wrapper";
 var INTRO_SECTION_ID = "introduction";
-var SEND_BTN_ID = "feedback-send-btn";
-var FINAL_MSG_ID = "feedback-final-msg";
 
 
 openZenMode(content);
 formatContent(wrapper);
-var feedbackWrapper = createFeedbackWrapper(content);
+var feedbackWrapper = createFeedbackWrapper(content, "feedback-wrapper");
 var sections = listSections(INTRO_SECTION_ID);
 createFeedbackWidgets(sections, feedbackWrapper);
 
@@ -138,12 +140,17 @@ var copyFeedback = (function(parent) {
     }
 })(feedbackWrapper);
 
-var toolbar = Toolbar(feedbackWrapper, "feedback-toolbar", copyFeedback);
+var toolbar = Toolbar(
+    feedbackWrapper,
+    "feedback-toolbar",
+    copyFeedback,
+    clearFeedback,
+);
 
 document.addEventListener("keyup", function(event) {
     var text = getSelectedText();    
     if (text && event.keyCode == 13) { // 13 == Enter
-        var widget = findActiveFeedbackWidget(sections);
+        var widget = findActiveFeedbackWidget(sections, INTRO_SECTION_ID);
         if (!widget) {
             return alert("Error: cannot find active widget.");
         }
