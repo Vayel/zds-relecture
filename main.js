@@ -132,7 +132,7 @@ var copyFeedback = (function(parent) {
             msg += "\n\n" + feedback;
         }
 
-        feedbackMsg.value = msg;
+        feedbackMsg.value = msg + "\n\n_________________________\n";
         feedbackMsg.style.display = "block";
         feedbackMsg.select();
         document.execCommand("copy");
