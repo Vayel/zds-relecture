@@ -89,8 +89,20 @@ function createFeedbackMessage(parent) {
     return el;
 }
 
+function getLastParentBeforeArticle(cur) {
+    var par = cur;
+    var article = document.querySelector("section.article-content");
+    
+    do {
+        cur = par;
+        par = cur.parentNode;
+    } while (par != article);
+
+    return cur;
+}
+
 function findActiveFeedbackWidget(sections, introId) {
-    var cur = window.getSelection().anchorNode.parentNode;
+    var cur = getLastParentBeforeArticle(window.getSelection().anchorNode);
 
     while ((cur = cur.previousSibling) && !isSectionTitle(cur)) {}
 
