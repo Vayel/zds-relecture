@@ -7,9 +7,9 @@ function readTitle() {
     return readText(h1);
 }
 
-function openZenMode(content) {
+function switchZenMode(content, open) {
     var classes = content.className.split(' ');
-    if (classes.indexOf("zen-mode") != -1) {
+    if (open && classes.indexOf("zen-mode") != -1) {
         return;
     }
     document.querySelector(".open-zen-mode").click();
@@ -29,6 +29,7 @@ function formatContent(content) {
 function createFeedbackWrapper(parent, id) {
     var div = parent.querySelector("#" + id);
     if (div) {
+        div.style.display = "inline-block";
         return;
     }
 
@@ -125,7 +126,7 @@ var wrapper = document.querySelector(".content-wrapper");
 var INTRO_SECTION_ID = "introduction";
 
 
-openZenMode(content);
+switchZenMode(content);
 formatContent(wrapper);
 var feedbackWrapper = createFeedbackWrapper(content, "feedback-wrapper");
 var sections = listSections(INTRO_SECTION_ID);
@@ -152,11 +153,18 @@ var copyFeedback = (function(parent) {
     }
 })(feedbackWrapper);
 
+function quit() {
+    switchZenMode(content); 
+    feedbackWrapper.style.display = "none";
+    wrapper.setAttribute("style", "");
+}
+
 var toolbar = Toolbar(
     feedbackWrapper,
     "feedback-toolbar",
     copyFeedback,
     clearFeedback,
+    quit,
 );
 
 document.addEventListener("keyup", function(event) {

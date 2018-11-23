@@ -1,4 +1,4 @@
-var Toolbar = function(parent, id, copyFeedbackCb, clearFeedbackCb) {
+var Toolbar = function(parent, id, copyFeedbackCb, clearFeedbackCb, quitCb) {
     var toolbar = document.getElementById(id);
     if (toolbar) {
         return toolbar; 
@@ -51,4 +51,10 @@ var Toolbar = function(parent, id, copyFeedbackCb, clearFeedbackCb) {
         "Effacer les retours"
     );
     clear.addEventListener("click", clearFeedbackCb);
+
+    var quit = addButton(
+        '<img src="' + browser.extension.getURL("icons/quit.png") + '" alt="Quitter le mode relecture" />',
+        "Quitter le mode relecture"
+    );
+    quit.addEventListener("click", quitCb);
 };
