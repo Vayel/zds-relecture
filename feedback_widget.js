@@ -37,14 +37,37 @@ var FeedbackWidget = function(section, wrapper) {
             comment.className = "comment";
             comment.style.marginBottom = "20px";
 
+            var quoteWrapper = document.createElement("div");
+            quoteWrapper.style.display = "flex";
+            comment.appendChild(quoteWrapper);
+
+            var deleteQuoteWrapper = document.createElement("div");
+            quoteWrapper.appendChild(deleteQuoteWrapper);
+
+            var deleteQuote = document.createElement("a");
+            deleteQuote.href = "#";
+            deleteQuote.title = "Supprimer le commentaire";
+            deleteQuote.innerHTML = (
+                '<img ' +
+                'src="' + browser.extension.getURL("icons/delete.png") + '" ' +
+                'alt="Supprimer le commentaire" />'
+            );
+            deleteQuoteWrapper.appendChild(deleteQuote);
+
+            deleteQuote.addEventListener("click", function(e) {
+                e.preventDefault();
+                widget.removeChild(comment);
+            });
+
             var quote = document.createElement("blockquote");
             quote.className = "quote";
             quote.innerHTML = selectedText.split("\n").join("<br>");
+            quote.style.flexGrow = "1";
             quote.style.color = "#777";
             quote.style.padding = "1px 2%";
             quote.style.borderLeft = "5px solid #ccc";
             quote.style.margin = "5px";
-            comment.appendChild(quote);
+            quoteWrapper.appendChild(quote);
 
             var textarea = document.createElement("textarea");
             textarea.className = "feedback";
