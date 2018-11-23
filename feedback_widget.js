@@ -1,12 +1,22 @@
 var FeedbackWidget = function(section, wrapper) {
     var widget = Widget(section.element, section.id + "-feedback", wrapper);
+    var label = document.createElement("div");
+    label.innerHTML = section.title;
+    label.style.fontWeight = "bold";
+    label.style.marginBottom = "20px";
+    var noCommentDiv = document.createElement("div");
+    noCommentDiv.innerHTML = (
+        "Aucun commentaire pour le moment. <br>" +
+        "Sélectionnez du texte puis pressez « Entrée » pour en insérer un."
+    );
+
+    function initHTML() {
+        widget.appendChild(label);
+        widget.appendChild(noCommentDiv);
+    }
 
     if (!widget.innerHTML) {
-        var label = document.createElement("div");
-        label.innerHTML = section.title;
-        label.style.fontWeight = "bold";
-        label.style.marginBottom = "20px";
-        widget.appendChild(label);
+        initHTML();
     }
 
     return {
@@ -31,8 +41,12 @@ var FeedbackWidget = function(section, wrapper) {
                 );
             }
         },
-        clear: function() { widget.innerHTML = ""; },
+        clear: function() { widget.innerHTML = ""; initHTML(); },
         quote: function(selectedText) {
+            try {
+                widget.removeChild(noCommentDiv);
+            } catch(err) {}
+
             var comment = document.createElement("div");
             comment.className = "comment";
             comment.style.marginBottom = "20px";
@@ -57,6 +71,9 @@ var FeedbackWidget = function(section, wrapper) {
             deleteQuote.addEventListener("click", function(e) {
                 e.preventDefault();
                 widget.removeChild(comment);
+                if (!widget.querySelectorAll(".comment").length) {
+                    widget.appendChild(noCommentDiv);
+                }
             });
 
             var quote = document.createElement("blockquote");
