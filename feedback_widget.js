@@ -1,22 +1,33 @@
 var FeedbackWidget = function(section, wrapper) {
     var widget = Widget(section.element, section.id + "-feedback", wrapper);
-    var label = document.createElement("div");
-    label.innerHTML = section.title;
-    label.style.fontWeight = "bold";
-    label.style.marginBottom = "20px";
-    var noCommentDiv = document.createElement("div");
-    noCommentDiv.innerHTML = (
-        "Aucun commentaire pour le moment. <br>" +
-        "Sélectionnez du texte puis pressez « Entrée » pour en insérer un."
-    );
 
-    function initHTML() {
+    var label = widget.querySelector(".label");
+    if (!label) {
+        label = document.createElement("div");
+        label.className = "label";
+        label.innerHTML = section.title;
+        label.style.fontWeight = "bold";
+        label.style.marginBottom = "20px";
+    }
+
+    var noCommentDiv = widget.querySelector(".no-comment");
+    if (!noCommentDiv) {
+        noCommentDiv = document.createElement("div");
+        noCommentDiv.className = "no-comment";
+        noCommentDiv.innerHTML = (
+            "Aucun commentaire pour le moment. <br>" +
+            "Sélectionnez du texte puis pressez « Entrée » pour en insérer un."
+        );
+    }
+
+    function resetHTML() {
+        widget.innerHTML = "";
         widget.appendChild(label);
         widget.appendChild(noCommentDiv);
     }
 
     if (!widget.innerHTML) {
-        initHTML();
+        resetHTML();
     }
 
     return {
@@ -41,7 +52,7 @@ var FeedbackWidget = function(section, wrapper) {
                 );
             }
         },
-        clear: function() { widget.innerHTML = ""; initHTML(); },
+        clear: resetHTML,
         quote: function(selectedText) {
             try {
                 widget.removeChild(noCommentDiv);

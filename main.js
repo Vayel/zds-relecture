@@ -32,6 +32,17 @@ function createFeedbackWrapper(parent, id) {
         div.style.display = "inline-block";
         return div;
     }
+    
+    document.addEventListener("keyup", function(event) {
+        var text = getSelectedText();    
+        if (text && event.keyCode == 13) { // 13 == Enter
+            var widget = findActiveFeedbackWidget(sections, INTRO_SECTION_ID);
+            if (!widget) {
+                return alert("Error: cannot find active widget.");
+            }
+            widget.quote(text);
+        }
+    });
 
     div = document.createElement("div");
     div.id = id;
@@ -166,14 +177,3 @@ var toolbar = Toolbar(
     clearFeedback,
     quit,
 );
-
-document.addEventListener("keyup", function(event) {
-    var text = getSelectedText();    
-    if (text && event.keyCode == 13) { // 13 == Enter
-        var widget = findActiveFeedbackWidget(sections, INTRO_SECTION_ID);
-        if (!widget) {
-            return alert("Error: cannot find active widget.");
-        }
-        widget.quote(text);
-    }
-});
