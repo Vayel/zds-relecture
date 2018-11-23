@@ -1,29 +1,37 @@
 var Toolbar = function(parent, id, copyFeedbackCb, clearFeedbackCb, quitCb) {
     var toolbar = document.getElementById(id);
+    var ul;
     if (toolbar) {
+        ul = toolbar.querySelector(ul);
         return toolbar; 
     }
 
     function addButton(html, hoverHTML) {
-        var btn = document.createElement("button");
+        var li = document.createElement("li");
+        li.style.listStyleType = "none";
+        li.style.textAlign = "right";
+        li.style.padding = "5px 0";
+        li.style.height = "30px";
+        ul.appendChild(li);
+
+        var btn = document.createElement("a");
+        btn.href = "#";
         btn.innerHTML = html;
+        btn.style.textAlign = "center";
         btn.style.fontFamily = "Merriweather,Liberation Serif,Times New Roman,Times,Georgia,FreeSerif,serif";
         btn.style.backgroundColor = "#eee";
         btn.style.color = "#555";
-        btn.style.cursor = "pointer";
         btn.style.border = "none";
-        btn.style.padding = "0px 10px";
-        btn.style.marginBottom = "5px";
+        btn.style.padding = "10px";
         btn.style.fontSize = "12px";
-        toolbar.appendChild(btn);
-        toolbar.appendChild(document.createElement("br"));
+        li.appendChild(btn);
 
         if (hoverHTML !== undefined) {
-            btn.addEventListener("mouseover", function() {
+            li.addEventListener("mouseover", function() {
                 btn.innerHTML = hoverHTML;
             });
 
-            btn.addEventListener("mouseout", function() {
+            li.addEventListener("mouseout", function() {
                 btn.innerHTML = html;
             });
         }
@@ -31,17 +39,21 @@ var Toolbar = function(parent, id, copyFeedbackCb, clearFeedbackCb, quitCb) {
         return btn;
     }
 
-    var toolbar = document.createElement("div");
+    toolbar = document.createElement("div");
     toolbar.style.position = "fixed";
     toolbar.style.top = "5px";
     toolbar.style.right = "5px";
     parent.appendChild(toolbar);
+    
+    ul = document.createElement("ul");
+    toolbar.appendChild(ul);
 
     var copy= addButton(
         '<img src="' + browser.extension.getURL("icons/copy.png") + '" alt="Copier" />',
         "Copier dans le presse-papier"
     );
-    copy.addEventListener("click", function() {
+    copy.addEventListener("click", function(e) {
+        e.preventDefault();
         copyFeedbackCb();
         copy.innerHTML = '<img src="' + browser.extension.getURL("icons/check.png") + '" alt="Copié !" />';
     });
@@ -50,11 +62,17 @@ var Toolbar = function(parent, id, copyFeedbackCb, clearFeedbackCb, quitCb) {
         '<img src="' + browser.extension.getURL("icons/clear.png") + '" alt="Copier" />',
         "Effacer les retours"
     );
-    clear.addEventListener("click", clearFeedbackCb);
+    clear.addEventListener("click", function(e) {
+        e.preventDefault();
+        clearFeedbackCb();
+    });
 
     var quit = addButton(
         '<img src="' + browser.extension.getURL("icons/quit.png") + '" alt="Quitter le mode relecture" />',
         "Quitter le mode relecture"
     );
-    quit.addEventListener("click", quitCb);
+    quit.addEventListener("click", function(e) {
+        e.preventDefault();
+        quitCb();
+    });
 };
