@@ -144,7 +144,7 @@ var copyFeedback = (function(parent) {
             msg += "\n\n" + feedback;
         }
 
-        feedbackMsg.value = msg + "\n\n_________________________\n";
+        feedbackMsg.value = msg + "\n\n___________\n\n";
         feedbackMsg.style.display = "block";
         feedbackMsg.select();
         document.execCommand("copy");

@@ -5,34 +5,53 @@ var FeedbackWidget = function(section, wrapper) {
         var label = document.createElement("div");
         label.innerHTML = section.title;
         label.style.fontWeight = "bold";
+        label.style.marginBottom = "20px";
         widget.appendChild(label);
-
-        var textarea = document.createElement("textarea");
-        textarea.style.height = (window.innerHeight * 0.5) + "px";
-        widget.appendChild(textarea);
     }
 
     return {
         toMarkdown: function() {
-            var feedback = textarea.value;
-            if (feedback) {
+            var comments = widget.querySelectorAll(".comment"),
+                quote,
+                msg = "";
+            for (var comment of comments) {
+                quote = comment.querySelector(".quote").innerText.split("\n");
+                msg += (
+                    "\n\n" +
+                    "> " +
+                    quote.join("\n> ") +
+                    "\n\n" +
+                    comment.querySelector(".feedback").value
+                );
+            }
+            if (msg) {
                 return (
                     mdTitle(mdLink(section.title, section.url), 2) +
-                    "\n\n" +
-                    feedback
+                    msg
                 );
             }
         },
-        clear: function() { textarea.value = ""; },
-        fill: function(text) { textarea.value = text; },
+        clear: function() { widget.innerHTML = ""; },
         quote: function(selectedText) {
-            var lines = selectedText.split("\n");
-            var quote = "> " + lines.join("\n> ");
-            if (textarea.value) {
-                textarea.value += "\n\n";
-            }
-            textarea.value += quote + "\n\n";
+            var comment = document.createElement("div");
+            comment.className = "comment";
+            comment.style.marginBottom = "20px";
+
+            var quote = document.createElement("blockquote");
+            quote.className = "quote";
+            quote.innerHTML = selectedText.split("\n").join("<br>");
+            quote.style.color = "#777";
+            quote.style.padding = "1px 2%";
+            quote.style.borderLeft = "5px solid #ccc";
+            quote.style.margin = "5px";
+            comment.appendChild(quote);
+
+            var textarea = document.createElement("textarea");
+            textarea.className = "feedback";
+            comment.appendChild(textarea);
             textarea.focus();
+
+            widget.appendChild(comment);
         },
     };
 };
