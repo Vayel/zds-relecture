@@ -30,7 +30,7 @@ function createFeedbackWrapper(parent, id) {
     var div = parent.querySelector("#" + id);
     if (div) {
         div.style.display = "inline-block";
-        return;
+        return div;
     }
 
     div = document.createElement("div");
@@ -65,9 +65,9 @@ function listSections(introId) {
     return sections;
 }
 
-function createFeedbackWidgets(sections, parent) {
+function createFeedbackWidgets(sections, wrapper) {
     for (section of sections) {
-        section.feedbackWidget = FeedbackWidget(section, parent);
+        section.feedbackWidget = FeedbackWidget(section, wrapper);
     }
 }
 

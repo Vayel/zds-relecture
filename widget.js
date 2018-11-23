@@ -2,7 +2,7 @@ var Widget = function(section, id, wrapper) {
     // We use this syntax because ids may contain numbers
     var widget = wrapper.querySelector("[id='" + id + "']");
     if (widget) {
-        return;
+        return widget;
     }
 
     widget = document.createElement("div");
