@@ -3,6 +3,12 @@ browser.pageAction.onClicked.addListener(() => {
         file: "shared.js"
     });
     browser.tabs.executeScript({
+        file: "comment.js"
+    });
+    browser.tabs.executeScript({
+        file: "comment_group.js"
+    });
+    browser.tabs.executeScript({
         file: "widget.js"
     });
     browser.tabs.executeScript({

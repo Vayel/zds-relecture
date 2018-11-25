@@ -19,3 +19,9 @@ function getSelectedText() {
 function isSectionTitle(el) {
     return el.tagName == "H2" && el.className.split(" ").indexOf(".subtitle") == -1;
 }
+
+function getAbsolutePos(element, prop = "top") {
+    var bodyRect = document.body.getBoundingClientRect(),
+        elemRect = element.getBoundingClientRect();
+    return elemRect[prop] - bodyRect.top;
+}

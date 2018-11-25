@@ -7,7 +7,7 @@ function readTitle() {
     return readText(h1);
 }
 
-function switchZenMode(content, open) {
+function switchZenMode(content, open = true) {
     var classes = content.className.split(' ');
     if (open && classes.indexOf("zen-mode") != -1) {
         return;
@@ -40,7 +40,7 @@ function createFeedbackWrapper(parent, id) {
             if (!widget) {
                 return alert("Error: cannot find active widget.");
             }
-            widget.quote(text);
+            widget.addComment(text, getSelectionAnchorElement());
         }
     });
 
@@ -101,8 +101,14 @@ function createFeedbackMessage(parent) {
     return el;
 }
 
-function getLastParentBeforeArticle(cur) {
-    var par = cur;
+function getSelectionAnchorElement() {
+    var cur = window.getSelection().anchorNode;
+    while (cur.nodeType != 1 && (cur = cur.parentNode)) {}
+    return cur;
+}
+
+function getSelectionLastParentBeforeArticle() {
+    var par = window.getSelection().anchorNode;
     var article = document.querySelector("section.article-content");
     
     do {
@@ -114,7 +120,7 @@ function getLastParentBeforeArticle(cur) {
 }
 
 function findActiveFeedbackWidget(sections, introId) {
-    var cur = getLastParentBeforeArticle(window.getSelection().anchorNode);
+    var cur = getSelectionLastParentBeforeArticle();
 
     while ((cur = cur.previousSibling) && !isSectionTitle(cur)) {}
 
