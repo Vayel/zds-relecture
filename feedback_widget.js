@@ -99,10 +99,19 @@ var FeedbackWidget = function(section, wrapper) {
 
             var textarea = document.createElement("textarea");
             textarea.className = "feedback";
+            textarea.style.height = "500px";
+            textarea.style.transition = "max-height 0.15s ease-out";
             comment.appendChild(textarea);
-            textarea.focus();
 
             widget.appendChild(comment);
+
+            textarea.addEventListener("focus", function() {
+                textarea.style.maxHeight = "150px";
+            });
+            textarea.addEventListener("blur", function() {
+                textarea.style.maxHeight = "20px";
+            });
+            textarea.focus();
         },
     };
 };
