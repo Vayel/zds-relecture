@@ -28,7 +28,6 @@
   },
   "web_accessible_resources": [
     "icons/copy.png",
-    "icons/clear.png",
     "icons/check.png",
     "icons/quit.png",
     "icons/comments.png",

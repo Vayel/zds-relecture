@@ -1,4 +1,4 @@
-var Toolbar = function(parent, id, copyFeedbackCb, clearFeedbackCb, quitCb) {
+var Toolbar = function(parent, id, copyFeedbackCb, quitCb) {
     var toolbar = document.getElementById(id);
     var ul;
     if (toolbar) {
@@ -56,15 +56,6 @@ var Toolbar = function(parent, id, copyFeedbackCb, clearFeedbackCb, quitCb) {
         e.preventDefault();
         copyFeedbackCb();
         copy.innerHTML = '<img src="' + browser.extension.getURL("icons/check.png") + '" alt="Copié !" />';
-    });
-
-    var clear = addButton(
-        '<img src="' + browser.extension.getURL("icons/clear.png") + '" alt="Copier" />',
-        "Effacer les retours"
-    );
-    clear.addEventListener("click", function(e) {
-        e.preventDefault();
-        clearFeedbackCb();
     });
 
     var quit = addButton(

@@ -132,12 +132,6 @@ function findActiveFeedbackWidget(sections, introId) {
     }
 }
 
-function clearFeedback() {
-    for (var section of sections) {
-        section.feedbackWidget.clear();
-    }
-}
-
 var content = document.getElementById("content");
 var wrapper = document.querySelector(".content-wrapper");
 var INTRO_SECTION_ID = "introduction";
@@ -180,6 +174,5 @@ var toolbar = Toolbar(
     feedbackWrapper,
     "feedback-toolbar",
     copyFeedback,
-    clearFeedback,
     quit,
 );
