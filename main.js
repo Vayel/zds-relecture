@@ -137,7 +137,7 @@ var wrapper = document.querySelector(".content-wrapper");
 var INTRO_SECTION_ID = "introduction";
 
 
-switchZenMode(content);
+switchZenMode(content, true);
 formatContent(wrapper);
 var feedbackWrapper = createFeedbackWrapper(content, "feedback-wrapper");
 var sections = listSections(INTRO_SECTION_ID);
