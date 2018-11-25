@@ -2,7 +2,7 @@ var Widget = function(section, id, wrapper) {
     // We use this syntax because ids may contain numbers
     var widget = wrapper.querySelector("[id='" + id + "']");
     if (widget) {
-        return widget;
+        return widget.querySelector(".widget-content");
     }
 
     widget = document.createElement("div");
@@ -11,6 +11,19 @@ var Widget = function(section, id, wrapper) {
     widget.style.position = "fixed";
     widget.style.top = "30px";
     widget.style.width = "45%";
+    wrapper.appendChild(widget);
+
+    var label = document.createElement("div");
+    label.className = "label";
+    label.innerHTML = section.title;
+    label.style.fontWeight = "bold";
+    label.style.marginBottom = "5px";
+    widget.appendChild(label);
+
+    var content = document.createElement("div");
+    content.className = "widget-content";
+    content.style.overflow = "auto";
+    widget.appendChild(content);
 
     function findNextSection(section) {
         var cur = section;
@@ -24,11 +37,12 @@ var Widget = function(section, id, wrapper) {
         return elemRect[prop] - bodyRect.top;
     }
 
-    var nextSection = findNextSection(section);
-    var topSection = getAbsolutePos(section, "bottom");
+    var nextSection = findNextSection(section.element);
+    var topSection = getAbsolutePos(section.element, "bottom");
     var topNextSection;
     if (nextSection) {
         topNextSection = getAbsolutePos(nextSection, "top");
+        // content.style.maxHeight = (topNextSection - topSection - label.offsetHeight - parseInt(widget.style.top)) + "px";
     } else {
         topNextSection = Infinity;
     }
@@ -67,8 +81,7 @@ var Widget = function(section, id, wrapper) {
     }
 
     document.addEventListener("scroll", updatePosition);
-
-    wrapper.appendChild(widget);
     updatePosition();
-    return widget;
+
+    return content;
 };

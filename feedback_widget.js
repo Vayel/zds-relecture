@@ -1,14 +1,5 @@
 var FeedbackWidget = function(section, wrapper) {
-    var widget = Widget(section.element, section.id + "-feedback", wrapper);
-
-    var label = widget.querySelector(".label");
-    if (!label) {
-        label = document.createElement("div");
-        label.className = "label";
-        label.innerHTML = section.title;
-        label.style.fontWeight = "bold";
-        label.style.marginBottom = "20px";
-    }
+    var widget = Widget(section, section.id + "-feedback", wrapper);
 
     var noCommentDiv = widget.querySelector(".no-comment");
     if (!noCommentDiv) {
@@ -22,7 +13,6 @@ var FeedbackWidget = function(section, wrapper) {
 
     function resetHTML() {
         widget.innerHTML = "";
-        widget.appendChild(label);
         widget.appendChild(noCommentDiv);
     }
 
@@ -64,6 +54,7 @@ var FeedbackWidget = function(section, wrapper) {
 
             var quoteWrapper = document.createElement("div");
             quoteWrapper.style.display = "flex";
+            quoteWrapper.style.overflow = "hidden";
             comment.appendChild(quoteWrapper);
 
             var deleteQuoteWrapper = document.createElement("div");
@@ -100,16 +91,17 @@ var FeedbackWidget = function(section, wrapper) {
             var textarea = document.createElement("textarea");
             textarea.className = "feedback";
             textarea.style.height = "500px";
-            textarea.style.transition = "max-height 0.15s ease-out";
             comment.appendChild(textarea);
 
             widget.appendChild(comment);
 
             textarea.addEventListener("focus", function() {
                 textarea.style.maxHeight = "150px";
+                quoteWrapper.style.maxHeight = "none";
             });
             textarea.addEventListener("blur", function() {
                 textarea.style.maxHeight = "20px";
+                quoteWrapper.style.maxHeight = "35px";
             });
             textarea.focus();
         },
