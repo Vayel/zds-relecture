@@ -30,7 +30,8 @@
     "icons/copy.png",
     "icons/check.png",
     "icons/quit.png",
-    "icons/comments.png",
+    "icons/comment.png",
+    "icons/comment-full.png",
     "icons/delete.png"
   ]
 }

@@ -7,13 +7,17 @@ var Comment = function(quotedText, deleteCb) {
     var quoteWrapper = document.createElement("div");
     quoteWrapper.style.display = "flex";
     quoteWrapper.style.width = "100%";
+    quoteWrapper.style.alignItems = "center";
+    quoteWrapper.style.justifyContent = "center";
     comment.appendChild(quoteWrapper);
 
     var deleteQuoteWrapper = document.createElement("div");
+    deleteQuoteWrapper.style.verticalAlign = "middle";
     quoteWrapper.appendChild(deleteQuoteWrapper);
 
     var deleteQuote = document.createElement("a");
     deleteQuote.href = "#";
+    deleteQuote.style.verticalAlign = "middle";
     deleteQuote.title = "Supprimer le commentaire";
     deleteQuote.innerHTML = (
         '<img ' +
@@ -30,6 +34,7 @@ var Comment = function(quotedText, deleteCb) {
     var quoteLink = document.createElement("a");
     quoteLink.href = "#";
     quoteLink.style.textDecoration = "none";
+    quoteLink.style.alignSelf = "flex-start";
     quoteWrapper.appendChild(quoteLink);
 
     var quote = document.createElement("blockquote");
@@ -37,7 +42,7 @@ var Comment = function(quotedText, deleteCb) {
     quote.innerHTML = quotedText.split("\n").join("<br>");
     quote.style.flexGrow = "1";
     quote.style.color = "#777";
-    quote.style.padding = "1px 2%";
+    quote.style.padding = "5px";
     quote.style.borderLeft = "5px solid #ccc";
     quote.style.margin = "5px";
     quote.style.width = "100%";
@@ -49,18 +54,25 @@ var Comment = function(quotedText, deleteCb) {
     comment.appendChild(textarea);
 
     function show() {
-        comment.style.maxHeight = "none";
+        // To avoid conflict with textarea.blur()
+        quoteLink.removeEventListener("click", showEvent);
+        quoteWrapper.style.maxHeight = "none";
+        textarea.style.display = "block";
         textarea.focus();
     }
 
     function hide() {
-        comment.style.maxHeight = "35px";
+        quoteLink.addEventListener("click", showEvent);
+        quoteWrapper.style.maxHeight = "35px";
+        textarea.style.display = "none";
     }
 
-    quote.addEventListener("click", function(e) {
+    function showEvent(e) {
         e.preventDefault();
         show();
-    });
+    }
+
+    quoteLink.addEventListener("click", showEvent);
     textarea.addEventListener("blur", hide);
 
     return {

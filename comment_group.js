@@ -17,11 +17,10 @@ var CommentGroup = function(anchor, topRef, deleteGroupCb) {
     var icon = document.createElement("a");
     icon.href = "#";
     icon.title = "Afficher les commentaires";
-    icon.innerHTML = (
-        '<img ' +
-        'src="' + browser.extension.getURL("icons/comments.png") + '" ' +
-        'alt="Afficher les commentaires" />'
-    );
+    icon.style.display = "block";
+    icon.style.width = "24px";
+    icon.style.height = "24px";
+    icon.style.backgroundImage = "url('" + browser.extension.getURL("icons/comment.png") + "')";
     iconWrapper.appendChild(icon);
 
     var commentsWrapper = document.createElement("div");
@@ -31,7 +30,6 @@ var CommentGroup = function(anchor, topRef, deleteGroupCb) {
 
     function show() {
         icon.title = "Cacher les commentaires";
-        icon.querySelector("img").alt = "Cacher les commentaires";
         commentsWrapper.style.display = "block";
     }
 
@@ -41,7 +39,6 @@ var CommentGroup = function(anchor, topRef, deleteGroupCb) {
             show();
         } else {
             icon.title = "Afficher les commentaires";
-            icon.querySelector("img").alt = "Afficher les commentaires";
             commentsWrapper.style.display = "none";
         }
     });
