@@ -1,14 +1,12 @@
 var Comment = function(quotedText, deleteCb) {
     var comment = document.createElement("div");
     comment.className = "comment";
-    comment.style.marginBottom = "20px";
     comment.style.overflow = "hidden";
 
     var quoteWrapper = document.createElement("div");
     quoteWrapper.style.display = "flex";
     quoteWrapper.style.width = "100%";
     quoteWrapper.style.alignItems = "center";
-    quoteWrapper.style.justifyContent = "center";
     comment.appendChild(quoteWrapper);
 
     var deleteQuoteWrapper = document.createElement("div");
@@ -54,16 +52,13 @@ var Comment = function(quotedText, deleteCb) {
     comment.appendChild(textarea);
 
     function show() {
-        // To avoid conflict with textarea.blur()
-        quoteLink.removeEventListener("click", showEvent);
         quoteWrapper.style.maxHeight = "none";
         textarea.style.display = "block";
         textarea.focus();
     }
 
     function hide() {
-        quoteLink.addEventListener("click", showEvent);
-        quoteWrapper.style.maxHeight = "35px";
+        quoteWrapper.style.maxHeight = "43px";
         textarea.style.display = "none";
     }
 

@@ -102,9 +102,7 @@ function createFeedbackMessage(parent) {
 }
 
 function getSelectionAnchorElement() {
-    var cur = window.getSelection().anchorNode;
-    while (cur.nodeType != 1 && (cur = cur.parentNode)) {}
-    return cur;
+    return getSelectionLastParentBeforeArticle();
 }
 
 function getSelectionLastParentBeforeArticle() {
