@@ -8,7 +8,9 @@ le même texte que `index.html` à une modification près (pour observer comment
 se comporte AnnotatorJS d'une version à l'autre d'un contenu).
 
 Les annotations sont rendues persistentes via une base de données gérée par
-`server.py`.
+`server.py`. Elles apparaissent en jaune quand elles portent sur la version
+courante du contenu (définie en bas du fichier HTML correspondant), en rouge
+sinon.
 
 ## Installation
 
