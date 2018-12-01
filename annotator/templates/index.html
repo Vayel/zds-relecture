@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<p>
+Aujourd'hui, le protocole HTTP est massivement employé pour consulter une page Web. Normal, il a été conçu pour : son objectif est de délivrer du texte. Sauf qu'à sa création, on n'imaginait pas qu'Internet prendrait autant d'ampleur, et les possibilités d'interaction dans une page étaient très pauvres : vous deviez, pour mettre à jour le moindre élément, charger derechef la page dans son intégralité. Eh oui, dans son intégralité. Autant dire que ça pompait au niveau du réseau et des ressources du serveur, et ne parlons même pas du confort pour l'utilisateur : on était loin de la communication en temps réel.
+</p>
+
+<p>
+Fort heureusement, AJAX est paru. Cette technologie permet d'effectuer via JavaScript une requête HTTP sans rechargement de la page. Il est alors possible de mettre à jour une partie seulement de cette dernière à partir de données provenant du serveur et donc, en contactant fréquemment ce dernier, de simuler du temps réel. Mais aussi pratique qu'AJAX puisse être, les requêtes se font toujours via HTTP. Or ce protocole est très limité pour faire du temps réel : il est sans état et ne permet pas le push.
+</p>
+{% endblock %}

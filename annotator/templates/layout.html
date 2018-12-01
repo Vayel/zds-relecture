@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='annotator.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
+</head>
+<body>
+    <section class="content">
+      {% block content %}{% endblock %}
+    </section>
+
+    <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='annotator.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='annotator.store.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='custom.js') }}"></script>
+</body>
+</html>
