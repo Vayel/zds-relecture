@@ -11,6 +11,7 @@
       {% block content %}{% endblock %}
     </section>
 
+    {% block js %}{% endblock %}
     <script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='annotator.min.js') }}"></script>
     <script src="{{ url_for('static', filename='annotator.store.min.js') }}"></script>

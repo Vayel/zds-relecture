@@ -9,3 +9,7 @@ Aujourd'hui, le protocole HTTP est massivement employé pour consulter une page 
 Fort heureusement, AJAX est paru. Cette technologie permet d'effectuer via JavaScript une requête HTTP sans rechargement de la page. Il est alors possible de mettre à jour une partie seulement de cette dernière à partir de données provenant du serveur et donc, en contactant fréquemment ce dernier, de simuler du temps réel. Mais aussi pratique qu'AJAX puisse être, les requêtes se font toujours via HTTP. Or ce protocole est très limité pour faire du temps réel : il est sans état et ne permet pas le push.
 </p>
 {% endblock %}
+
+{% block js %}
+<script>var CONTENT_VERSION = 0;</script>
+{% endblock %}

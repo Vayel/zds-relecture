@@ -20,9 +20,9 @@ def updated():
 
 @app.route("/search")
 def search():
-    page_id = request.args["page"]
+    content_id = request.args["content_id"]
     with shelve.open(db_path) as db:
-        annotations = [ann for ann in db.values() if ann["page"] == page_id] 
+        annotations = [ann for ann in db.values() if ann["content_id"] == content_id] 
     return jsonify({
         "total": len(annotations),
         "rows": annotations,
